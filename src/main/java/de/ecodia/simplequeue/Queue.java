@@ -5,7 +5,7 @@ import java.util.logging.Logger;
 
 import static de.ecodia.simplequeue.Utils.spawnThread;
 
-public class Queue {
+public class Queue implements Publisher, Subscriber {
 
 	private static final Logger log = Logger.getLogger(Queue.class.getName());
 
