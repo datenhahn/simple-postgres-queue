@@ -33,8 +33,9 @@ public class Utils {
 		}
 	}
 
-	public static void spawnThread(Runnable runnable) {
+	public static Thread spawnThread(Runnable runnable) {
 		var thread = new Thread(runnable);
 		thread.start();
+		return thread;
 	}
 }

@@ -35,7 +35,6 @@ public class QueueTest {
 		queue.subscribe(queueName + "pub", message -> {
 			assertEquals("{ 'foo': 'bar'}", message.getMessage());
 			count[0] = 1;
-			return "";
 		});
 		queue.publish(queueName + "pub", "{ 'foo': 'bar'}");
 		Utils.sleep(200);
@@ -63,7 +62,6 @@ public class QueueTest {
 				errors.add(msg);
 			}
 			all.add(message.getMessage());
-			return "";
 		});
 		queue.subscribe(queueName, message -> {
 			countB[0]++;
@@ -73,7 +71,6 @@ public class QueueTest {
 				errors.add(msg);
 			}
 			all.add(message.getMessage());
-			return "";
 		});
 		queue.subscribe(queueName, message -> {
 			countC[0]++;
@@ -83,7 +80,6 @@ public class QueueTest {
 				errors.add(msg);
 			}
 			all.add(message.getMessage());
-			return "";
 		});
 		for(int i = 0; i < 1000; i++) {
 			queue.publish(queueName, "msg: " + i);

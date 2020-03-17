@@ -17,6 +17,8 @@ public class Queue {
 
 	private String tableName;
 
+	private boolean stop = false;
+
 	private boolean notifyProcessing = true;
 
 	public Queue(DataSource ds) {
@@ -56,6 +58,10 @@ public class Queue {
 		}
 	}
 
+	public void stop() {
+		this.stop = true;
+	}
+
 	public void subscribe(String queue, MessageCallback callback) {
 
 		var PENDING_QUERY = "SELECT * FROM \"%s\" WHERE status = 'PENDING' AND queue = ? order by id asc LIMIT 1 FOR UPDATE;";
@@ -64,7 +70,7 @@ public class Queue {
 
 		spawnThread(() -> {
 
-				while(true) {
+				while(!this.stop) {
 					try(
 						var con = ds.getConnection();
 						var stmtPending = con.prepareStatement(String.format(PENDING_QUERY, tableName));
@@ -86,9 +92,9 @@ public class Queue {
 							}
 
 							try {
-								var statusText = callback.handle(message);
+								callback.handle(message);
 								finishStmt.setString(1, MessageStatus.FINISHED.toString());
-								finishStmt.setString(2, statusText);
+								finishStmt.setString(2, "");
 							}
 							catch(CallbackFailedException e) {
 								finishStmt.setString(1, MessageStatus.FAILED.toString());
