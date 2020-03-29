@@ -17,7 +17,7 @@ see `src/main/java/de/ecodia/simplequeue/examples/ExampleApp.java` for the full 
 ```java
 
     // dataSource is some standard jdbc datasource
-    var queue = new Queue(dataSource);
+    var queue = new SimpleQueue(dataSource);
 
     queue.publish("myqueue", "well that was easy");
 
@@ -26,3 +26,24 @@ see `src/main/java/de/ecodia/simplequeue/examples/ExampleApp.java` for the full 
     });
 ```
 
+## Subscriber Callback
+
+The subscriber callback has access to the message properties:
+
+    id
+    queue
+    traceId
+    created
+    updated
+    publisherId
+    subscriberId
+    status
+    statusText
+    message
+
+The subscriber and publisher ID can be set as `hostId`in the constructor.
+
+    public SimpleQueue(DataSource ds, String hostId, boolean notifyProcessing, String tableName)
+    
+If parameter `notifyProcessing` is set to true it will update the table to state "PROCESSING" when starting
+to process the callback. If set to false it will only update after finishing the callback. 
