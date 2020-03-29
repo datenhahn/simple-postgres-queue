@@ -4,12 +4,9 @@ import javax.sql.DataSource;
 
 import java.io.IOException;
 import java.util.LinkedList;
-import java.util.UUID;
 
 import com.opentable.db.postgres.embedded.EmbeddedPostgres;
-import com.zaxxer.hikari.HikariConfig;
-import com.zaxxer.hikari.HikariDataSource;
-import de.ecodia.simplequeue.Queue;
+import de.ecodia.simplequeue.SimpleQueue;
 import de.ecodia.simplequeue.Utils;
 import org.junit.Test;
 
@@ -29,7 +26,7 @@ public class QueueTest {
 
 	@Test
 	public void publish() {
-		var queue = new Queue(this.ds, "testhost", true, "mytest1");
+		var queue = new SimpleQueue(this.ds, "testhost", true, "mytest1");
 		final int[] count = new int[1];
 		count[0] = 0;
 		queue.subscribe(queueName + "pub", message -> {
@@ -43,7 +40,7 @@ public class QueueTest {
 
 	@Test
 	public void concurrent() {
-		var queue = new Queue(this.ds, "testhost", true, "mytest1");
+		var queue = new SimpleQueue(this.ds, "testhost", true, "mytest1");
 		final int[] countA = new int[1];
 		countA[0] = 0;
 		final int[] countB = new int[1];

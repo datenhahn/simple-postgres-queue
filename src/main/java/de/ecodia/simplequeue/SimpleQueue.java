@@ -5,9 +5,9 @@ import java.util.logging.Logger;
 
 import static de.ecodia.simplequeue.Utils.spawnThread;
 
-public class Queue implements Publisher, Subscriber {
+public class SimpleQueue implements Publisher, Subscriber {
 
-	private static final Logger log = Logger.getLogger(Queue.class.getName());
+	private static final Logger log = Logger.getLogger(SimpleQueue.class.getName());
 
 	private static final String DEFAULT_TABLE_NAME = "simple_queue";
 
@@ -21,15 +21,15 @@ public class Queue implements Publisher, Subscriber {
 
 	private boolean notifyProcessing = true;
 
-	public Queue(DataSource ds) {
+	public SimpleQueue(DataSource ds) {
 		this(ds, true);
 	}
 
-	public Queue(DataSource ds, boolean notifyProcessing) {
+	public SimpleQueue(DataSource ds, boolean notifyProcessing) {
 		this(ds, Utils.getHostId(), notifyProcessing, DEFAULT_TABLE_NAME);
 	}
 
-	public Queue(DataSource ds, String hostId, boolean notifyProcessing, String tableName) {
+	public SimpleQueue(DataSource ds, String hostId, boolean notifyProcessing, String tableName) {
 		this.ds = ds;
 
 		this.hostId = hostId;

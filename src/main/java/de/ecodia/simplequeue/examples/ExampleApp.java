@@ -2,7 +2,7 @@ package de.ecodia.simplequeue.examples;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
-import de.ecodia.simplequeue.Queue;
+import de.ecodia.simplequeue.SimpleQueue;
 import de.ecodia.simplequeue.Utils;
 
 public class ExampleApp {
@@ -14,7 +14,7 @@ public class ExampleApp {
 		config.setPassword("postgres");
 		var dataSource = new HikariDataSource(config);
 
-		var queue = new Queue(dataSource);
+		var queue = new SimpleQueue(dataSource);
 
 		queue.publish("myqueue", "well that was easy");
 
