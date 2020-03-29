@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.LinkedList;
 
 import com.opentable.db.postgres.embedded.EmbeddedPostgres;
+import de.ecodia.simplequeue.Message;
 import de.ecodia.simplequeue.SimpleQueue;
 import de.ecodia.simplequeue.Utils;
 import org.junit.Test;
@@ -36,6 +37,21 @@ public class QueueTest {
 		queue.publish(queueName + "pub", "{ 'foo': 'bar'}");
 		Utils.sleep(200);
 		assertEquals(1, count[0]);
+	}
+
+	@Test
+	public void publishWithTrace() {
+		var queue = new SimpleQueue(this.ds, "testhost", true, "mytest1");
+		final Message[] messages = new Message[1];
+		messages[0] = null;
+		queue.subscribe(queueName + "pub", message -> {
+			assertEquals("{ 'foo': 'bar'}", message.getMessage());
+			messages[0] = message;
+		});
+		queue.publish(queueName + "pub", "trace123", "{ 'foo': 'bar'}");
+		Utils.sleep(200);
+		assertNotNull(messages[0]);
+		assertEquals("trace123",messages[0].getTraceId());
 	}
 
 	@Test

@@ -38,9 +38,9 @@ public class SimpleQueue implements Publisher, Subscriber {
 		Schema.createSchema(ds, tableName);
 	}
 
-	public void publish(String queue, String message) {
+	public void publish(String queue, String traceId, String message) {
 
-		var INSERT_QUERY = "INSERT INTO \"%s\" (publisher_id, queue, message) values (?, ?, ?);";
+		var INSERT_QUERY = "INSERT INTO \"%s\" (publisher_id, queue, trace_id, message) values (?, ?, ?, ?);";
 
 		try(
 			var con = ds.getConnection();
@@ -49,13 +49,18 @@ public class SimpleQueue implements Publisher, Subscriber {
 			con.setAutoCommit(false);
 			stmt.setString(1, hostId);
 			stmt.setString(2, queue);
-			stmt.setString(3, message);
+			stmt.setString(3, traceId);
+			stmt.setString(4, message);
 			stmt.execute();
 			con.commit();
 		}
 		catch(Exception e) {
-			log.warning("Could not publish message: queue=" + queue + " message=" + message + " : " + e.getMessage());
+			log.warning("Could not publish message: queue=" + queue + " trace_id=" + traceId + " message=" + message + " : " + e.getMessage());
 		}
+	}
+
+	public void publish(String queue, String message) {
+		this.publish(queue, "NONE", message);
 	}
 
 	public void stop() {

@@ -11,6 +11,7 @@ public class Schema {
 		+ "("
 		+ "  id serial not null constraint \"%s_pk\" primary key,"
 		+ "  queue varchar(255),"
+		+ "  trace_id varchar(255),"
 		+ "  created timestamp default CURRENT_TIMESTAMP,"
 		+ "  updated timestamp default CURRENT_TIMESTAMP,"
 		+ "  publisher_id varchar(255) default '',"

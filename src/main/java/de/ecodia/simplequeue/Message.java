@@ -15,6 +15,8 @@ public class Message {
 
 	private String queue;
 
+	private String traceId;
+
 	private LocalDateTime created;
 
 	private LocalDateTime updated;
@@ -34,6 +36,7 @@ public class Message {
 			return new Message(
 				resultSet.getLong("id"),
 				resultSet.getString("queue"),
+				resultSet.getString("trace_id"),
 				resultSet.getTimestamp("created").toLocalDateTime(),
 				resultSet.getTimestamp("updated").toLocalDateTime(),
 				resultSet.getString("publisher_id"),
@@ -48,10 +51,11 @@ public class Message {
 		}
 	}
 
-	public Message(long id, String queue, LocalDateTime created, LocalDateTime updated, String publisherId, String subscriberId,
+	public Message(long id, String queue, String traceId, LocalDateTime created, LocalDateTime updated, String publisherId, String subscriberId,
 		MessageStatus status, String statusText, String message) {
 		this.id = id;
 		this.queue = queue;
+		this.traceId = traceId;
 		this.created = created;
 		this.updated = updated;
 		this.publisherId = publisherId;
@@ -63,6 +67,14 @@ public class Message {
 
 	public Message() {
 
+	}
+
+	public String getTraceId() {
+		return traceId;
+	}
+
+	public void setTraceId(String traceId) {
+		this.traceId = traceId;
 	}
 
 	public String getPublisherId() {
