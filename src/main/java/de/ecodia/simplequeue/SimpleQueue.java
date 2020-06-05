@@ -56,6 +56,7 @@ public class SimpleQueue implements Publisher, Subscriber {
 		}
 		catch(Exception e) {
 			log.warning("Could not publish message: queue=" + queue + " trace_id=" + traceId + " message=" + message + " : " + e.getMessage());
+			throw new PublishException(e);
 		}
 	}
 
